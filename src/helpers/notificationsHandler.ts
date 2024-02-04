@@ -1,6 +1,5 @@
 import { NotificationsTypes } from "../constants/notifications";
-import { findUsersForChat } from "../repositories/chats";
-import { checkIsUserInChat } from "../repositories/socketTokens";
+import { findUsersForChat } from "../repositories/socketTokens";
 
 export const notificationsHandler = async (notification, io) => {
   switch (notification.type) {
@@ -10,13 +9,15 @@ export const notificationsHandler = async (notification, io) => {
       });
 
       const usersToSendNotification = await findUsersForChat(
-        notification.chatId
+        notification.chatId, 
+        notification.message.creatorId,
       );
-      console.log(usersToSendNotification);
 
-      // io.to().emit("notification", {
-      //   ...notification.message,
-      // });
+      usersToSendNotification.map((user) => {
+        io.to(user.id).emit("notification", {
+          ...notification.message,
+        });
+      });
     }
   }
 };
