@@ -1,0 +1,7 @@
+{
+  "port": 3002,
+  "socketEndpoint": {
+    "notifications": "/notifications"
+  },
+  "sqsUrl": "https://sqs.us-east-1.amazonaws.com/500358832449/notifications.fifo"
+}
